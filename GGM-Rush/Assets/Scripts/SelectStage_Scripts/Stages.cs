@@ -6,25 +6,32 @@ using UnityEngine.SceneManagement;
 public class Stages : MonoBehaviour
 {
     public GameObject pannel;
+    private bool changeEnable;
     public string sceneName;
     CircleCollider2D circle;
     void Start()
     {
         circle = GetComponent<CircleCollider2D>();
     }
+    public void Update()
+    {
+
+        if (Input.GetKey(KeyCode.Space) && changeEnable)
+        {
+            SceneManager.LoadScene(sceneName);
+        }
+    }
     private void OnTriggerStay2D(Collider2D collision)
     {
+        changeEnable = true;
         if (collision.gameObject.name == "Player")
         {
             pannel.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                SceneManager.LoadScene(sceneName);
-            }
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         pannel.SetActive(false);
+        changeEnable = false;
     }
 }
