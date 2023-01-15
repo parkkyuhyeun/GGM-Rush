@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-    void Start()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        
-    }
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
 
-    void Update()
-    {
-        
+        }
     }
 }

@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMove : MonoBehaviour
+public class Player : MonoBehaviour
 {
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject bulletFactory;
     private float speed = 5f;
     private float jumpPower = 15f;
+    private int life = 5;
     Rigidbody2D rigid;
     private bool canJump = false;
+    private bool nonDamage = false;
     void Start()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -53,6 +55,13 @@ public class PlayerMove : MonoBehaviour
         {
             canJump = true;
         }
+        else if (collision.gameObject.CompareTag("Boss"))
+        {
+            if (!nonDamage)
+            {
+                StartCoroutine(SetHPImage());
+            }
+        }
     }
     public void SummmonBullet()
     {
@@ -60,5 +69,18 @@ public class PlayerMove : MonoBehaviour
         {
             Instantiate(bullet, bulletFactory.transform.position, transform.rotation);
         }
+    }
+    IEnumerator SetHPImage()
+    {
+        life--;
+        FindObjectOfType<GameManager>().SetLifeIcon(life);
+        nonDamage = true;
+        yield return new WaitForSeconds(2f);
+        nonDamage = false;
+        if (life == 0)
+        {
+
+        }
+        StopCoroutine(SetHPImage());
     }
 }
